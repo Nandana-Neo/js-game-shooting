@@ -10,6 +10,7 @@ let pl, bullets, enemies, particles, score;
 
 var scoreElement = document.getElementById("score");
 var startGameBtn = document.getElementById("startGameBtn");
+let highScore = 0;
 
 class Player{
     constructor(x,y,radius,color) {
@@ -172,10 +173,21 @@ function animate(){
         const dist = Math.hypot(pl.x - enemy.x , pl.y - enemy.y);
         if(dist - enemy.radius - pl.radius < 1){
             cancelAnimationFrame(animationId);
+
             var div = document.getElementById("newGame");
             div.style.display = "grid";
-            var scoreCard = div.querySelector("h1");
-            scoreCard.innerText = score;          
+            var scoreCard = div.querySelector("#points");
+            scoreCard.innerText = score; 
+            if(score > highScore){
+                highScore=score;
+                document.getElementById("newHighScore").classList.remove("hidden");
+            } else {
+                var elem = document.getElementById("newHighScore").classList;
+                if(elem.contains("hidden") === false) {
+                    elem.add("hidden");
+                }
+            }        
+            document.getElementById("highScore").innerText = highScore;
             clearInterval(intervalId); 
         }
         //Checking when a bullet hits the enemy
